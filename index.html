@@ -1,1 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>生日快乐！</title>
+    <style>
+        /* 这里是样式代码，决定页面的好不好看 */
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Microsoft YaHei", sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
 
+        /* 初始的遮罩层，用于引导点击播放音乐 */
+        #mask {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #open-btn {
+            padding: 15px 40px;
+            background: #ff6b81;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4);
+            animation: pulse 1.5s infinite;
+            cursor: pointer;
+        }
+
+        /* 主内容区域 */
+        #container {
+            display: none; /* 一开始隐藏 */
+            width: 80%;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        h1 { color: #ff6b81; font-size: 28px; margin-bottom: 10px; }
+        p { color: #555; line-height: 1.6; font-size: 16px; }
+        
+        /* 蛋糕图片样式 */
+        .cake-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin: 20px auto;
+            border: 5px solid #ffecd2;
+            display: block;
+        }
+
+        /* 简单的动画定义 */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 这是一个看不见的背景音乐播放器 -->
+    <!-- 注意：你需要把下面的src换成你自己的音乐链接 -->
+    <audio id="bgm" loop>
+        <source src="https://music.163.com/song/media/outer/url?id=186016.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- 第一屏：引导点击 -->
+    <div id="mask">
+        <button id="open-btn">点击开启生日惊喜 🎁</button>
+    </div>
+
+    <!-- 第二屏：生日卡片内容 -->
+    <div id="container">
+        <!-- 你可以把下面这个链接换成对方的照片链接 -->
+        <img class="cake-img" src="https://images.unsplash.com/photo-1558636508-e0db3814bd1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="生日蛋糕">
+        
+        <!-- 这里修改文字 -->
+        <h1 id="title">杨颜箕</h1>
+        <p>祝你生日快乐！🎂</p>
+        <p>愿你三冬暖，愿你春不寒。</p>
+        <p>愿你天黑有灯，下雨有伞。</p>
+        <p>愿你路上有良人相伴。</p>
+        <p>永远开心，永远自由！</p>
+    </div>
+
+    <script>
+        // 这是控制逻辑的代码
+        var btn = document.getElementById('open-btn');
+        var mask = document.getElementById('mask');
+        var container = document.getElementById('container');
+        var audio = document.getElementById('bgm');
+
+        btn.addEventListener('click', function() {
+            // 1. 隐藏遮罩层
+            mask.style.display = 'none';
+            // 2. 显示主内容
+            container.style.display = 'block';
+            // 3. 播放音乐
+            audio.play();
+            // 4. 简单的撒花特效 (Emoji雨)
+            createEmojiRain();
+        });
+
+        function createEmojiRain() {
+            setInterval(function() {
+                var div = document.createElement('div');
+                div.innerText = ['🎂', '🎉', '🎁', '🎈', '🥰'][Math.floor(Math.random() * 5)];
+                div.style.position = 'fixed';
+                div.style.left = Math.random() * 100 + '%';
+                div.style.top = '-50px';
+                div.style.fontSize = Math.random() * 20 + 20 + 'px';
+                div.style.transition = 'top 3s linear, opacity 3s';
+                document.body.appendChild(div);
+
+                setTimeout(function() {
+                    div.style.top = '110%';
+                    div.style.opacity = '0';
+                }, 100);
+
+                setTimeout(function() {
+                    div.remove();
+                }, 3000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
