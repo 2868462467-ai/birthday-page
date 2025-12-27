@@ -5,21 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>生日快乐！</title>
     <style>
-        /* 这里是样式代码，决定页面的好不好看 */
         body {
             margin: 0;
             padding: 0;
-            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
-            height: 100vh;
+            background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+            min-height: 100vh; /* 允许滚动 */
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* 改为顶部对齐，防止长内容被切掉 */
             font-family: "Microsoft YaHei", sans-serif;
-            overflow: hidden;
-            text-align: center;
         }
 
-        /* 初始的遮罩层，用于引导点击播放音乐 */
+        /* 遮罩层 */
         #mask {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -45,30 +42,32 @@
 
         /* 主内容区域 */
         #container {
-            display: none; /* 一开始隐藏 */
-            width: 80%;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 30px;
+            display: none;
+            width: 85%;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            position: relative;
+            text-align: center;
         }
 
-        h1 { color: #ff6b81; font-size: 28px; margin-bottom: 10px; }
-        p { color: #555; line-height: 1.6; font-size: 16px; }
+        h1 { color: #ff6b81; font-size: 26px; margin: 20px 0; }
+        p { color: #555; line-height: 1.6; font-size: 16px; margin: 10px 0; }
         
-        /* 蛋糕图片样式 */
-        .cake-img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin: 20px auto;
-            border: 5px solid #ffecd2;
-            display: block;
+        /* 照片样式 */
+        .photo-box {
+            margin: 15px 0;
+        }
+        .photo-box img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 3px solid white;
         }
 
-        /* 简单的动画定义 */
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -78,71 +77,69 @@
 </head>
 <body>
 
-    <!-- 这是一个看不见的背景音乐播放器 -->
-    <!-- 注意：你需要把下面的src换成你自己的音乐链接 -->
     <audio id="bgm" loop>
         <source src="https://music.163.com/song/media/outer/url?id=186016.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- 第一屏：引导点击 -->
     <div id="mask">
         <button id="open-btn">点击开启生日惊喜 🎁</button>
     </div>
 
-    <!-- 第二屏：生日卡片内容 -->
     <div id="container">
-        <!-- 你可以把下面这个链接换成对方的照片链接 -->
-        <img class="cake-img" src="https://images.unsplash.com/photo-1558636508-e0db3814bd1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="生日蛋糕">
+        <!-- 这里的文字可以自己改 -->
+        <h1>李志娜，生日快乐！🎂</h1>
         
-        <!-- 这里修改文字 -->
-         <h1 id="title">李志娜</h1>
-        <p>祝你生日快乐！🎂</p>
-        <p>愿你三冬暖，愿你春不寒。</p>
-        <p>愿你天黑有灯，下雨有伞。</p>
-        <p>愿你路上有良人相伴。</p>
-        <p>永远开心，永远自由！</p>
+        <p>和你在一起的时光，</p>
+        <p>都是闪闪发亮的日子 ✨</p>
+
+        <!-- 这里是照片区域 -->
+        <div class="photo-box">
+            <!-- 对应你上传的 1.jpg -->
+            <img src="1.jpg" alt="Photo 1">
+            <!-- 对应你上传的 2.jpg -->
+            <img src="2.jpg" alt="Photo 2">
+            <!-- 对应你上传的 3.jpg -->
+            <img src="3.jpg" alt="Photo 3">
+            <!-- 对应你上传的 4.jpg -->
+            <img src="4.jpg" alt="Photo 4">
+            <p>未来也要一起开心鸭！✌️</p>
+        </div>
+
+        <p style="margin-top: 30px; color: #ff6b81; font-weight: bold;"> 
     </div>
 
     <script>
-        // 这是控制逻辑的代码
         var btn = document.getElementById('open-btn');
         var mask = document.getElementById('mask');
         var container = document.getElementById('container');
         var audio = document.getElementById('bgm');
 
         btn.addEventListener('click', function() {
-            // 1. 隐藏遮罩层
             mask.style.display = 'none';
-            // 2. 显示主内容
             container.style.display = 'block';
-            // 3. 播放音乐
             audio.play();
-            // 4. 简单的撒花特效 (Emoji雨)
             createEmojiRain();
         });
 
         function createEmojiRain() {
             setInterval(function() {
                 var div = document.createElement('div');
-                div.innerText = ['🎂', '🎉', '🎁', '🎈', '🥰'][Math.floor(Math.random() * 5)];
+                div.innerText = ['❤️', '🎂', '✨', '🌹'][Math.floor(Math.random() * 4)];
                 div.style.position = 'fixed';
                 div.style.left = Math.random() * 100 + '%';
                 div.style.top = '-50px';
                 div.style.fontSize = Math.random() * 20 + 20 + 'px';
                 div.style.transition = 'top 3s linear, opacity 3s';
+                div.style.zIndex = '9999';
                 document.body.appendChild(div);
 
                 setTimeout(function() {
                     div.style.top = '110%';
                     div.style.opacity = '0';
                 }, 100);
-
-                setTimeout(function() {
-                    div.remove();
-                }, 3000);
+                setTimeout(function() { div.remove(); }, 3000);
             }, 300);
         }
     </script>
 </body>
 </html>
-
