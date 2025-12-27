@@ -5,109 +5,172 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>生日快乐！</title>
     <style>
+        /* --- 1. 活力清新背景 --- */
         body {
             margin: 0;
             padding: 0;
-            background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
-            min-height: 100vh; /* 允许滚动 */
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* 改为顶部对齐，防止长内容被切掉 */
-            font-family: "Microsoft YaHei", sans-serif;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            /* 换成清爽的蓝绿渐变 */
+            background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* 遮罩层 */
+        /* --- 2. 遮罩层 --- */
         #mask {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
             z-index: 999;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
         }
 
         #open-btn {
             padding: 15px 40px;
-            background: #ff6b81;
+            background: #ff9800; /* 橙色活力按钮 */
             color: white;
             border: none;
-            border-radius: 30px;
-            font-size: 20px;
-            box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4);
-            animation: pulse 1.5s infinite;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: bounce 2s infinite;
             cursor: pointer;
         }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
 
-        /* 主内容区域 */
+        /* --- 3. 主容器 --- */
         #container {
             display: none;
-            width: 85%;
-            margin-top: 50px;
-            margin-bottom: 50px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        h1 { color: #ff6b81; font-size: 26px; margin: 20px 0; }
-        p { color: #555; line-height: 1.6; font-size: 16px; margin: 10px 0; }
-        
-        /* 照片样式 */
-        .photo-box {
-            margin: 15px 0;
-        }
-        .photo-box img {
             width: 100%;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            border: 3px solid white;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 50px;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        /* --- 4. 祝福语区域 --- */
+        .text-box {
+            margin: 30px 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            min-height: 100px;
+        }
+        #typewriter {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            font-weight: 500;
+            white-space: pre-wrap;
+        }
+        #cursor {
+            display: inline-block;
+            width: 2px; height: 18px; background-color: #333;
+            animation: blink 1s infinite; vertical-align: middle;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* --- 5. 照片墙 (拍立得风格) --- */
+        .photo-wall {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 10px 10px 30px 10px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            margin-bottom: 25px;
+            width: 85%;
+            transform: rotate(-1deg);
+            transition: transform 0.3s;
+            border-radius: 3px;
+        }
+        
+        .polaroid:nth-child(even) { transform: rotate(1deg); }
+        .polaroid:hover { transform: scale(1.02); }
+
+        .polaroid img {
+            width: 100%;
+            display: block;
+            border: 1px solid #f0f0f0;
+        }
+        
+        .caption {
+            text-align: center;
+            font-family: cursive;
+            color: #555;
+            margin-top: 12px;
+            font-size: 16px;
+        }
+
+        /* --- 6. 彩带特效 --- */
+        .confetti {
+            position: absolute;
+            width: 10px; height: 10px;
+            background-color: #f00;
+            animation: fall linear forwards;
+        }
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(720deg); }
         }
     </style>
 </head>
 <body>
 
+    <!-- 音乐：换成欢快的纯音乐 -->
     <audio id="bgm" loop>
-        <source src="https://music.163.com/song/media/outer/url?id=186016.mp3" type="audio/mpeg">
+        <source src="https://music.163.com/song/media/outer/url?id=1466038848.mp3" type="audio/mpeg">
     </audio>
 
     <div id="mask">
-        <button id="open-btn">点击开启生日惊喜 🎁</button>
+        <button id="open-btn">🎂 点击签收生日祝福 🎂</button>
     </div>
 
     <div id="container">
-        <!-- 这里的文字可以自己改 -->
-        <h1>李志娜，生日快乐！🎂</h1>
-        
-        <p>和你在一起的时光，</p>
-        <p>都是闪闪发亮的日子 ✨</p>
-
-        <!-- 这里是照片区域 -->
-        <div class="photo-box">
-            <!-- 对应你上传的 1.jpg -->
-            <img src="1.jpg" alt="Photo 1">
-            <!-- 对应你上传的 3.jpg -->
-            <img src="3.jpg" alt="Photo 2">
-            <!-- 对应你上传的 4.jpg -->
-            <img src="4.jpg" alt="Photo 3">
-              <!-- 对应你上传的 6.jpg -->
-            <img src="6.jpg" alt="Photo 1">
-            <!-- 对应你上传的 5.jpg -->
-            <img src="5.jpg" alt="Photo 4">
-            <p>未来也要一起开心鸭！✌️</p>
+        <div class="text-box">
+            <span id="typewriter"></span><span id="cursor"></span>
         </div>
 
-        <p style="margin-top: 30px; color: #ff6b81; font-weight: bold;"> 
+        <div class="photo-wall" id="photo-wall">
+            <!-- 1.jpg 
+            <div class="polaroid">
+                <img src="1.jpg" alt="1">
+                <div class="caption"> 
+            </div>
+
+            <div class="polaroid">
+                <img src="3.jpg" alt="3">
+                <div class="caption"> 
+            </div>
+
+            <div class="polaroid">
+                <img src="4.jpg" alt="4">
+                <div class="caption">
+            </div>
+
+            <div class="polaroid">
+                <img src="5.jpg" alt="5">
+                <div class="caption">
+            </div>
+
+            <div class="polaroid">
+                <img src="6.jpg" alt="6">
+                <div class="caption">
+            </div>
+        </div>
     </div>
 
     <script>
@@ -115,34 +178,47 @@
         var mask = document.getElementById('mask');
         var container = document.getElementById('container');
         var audio = document.getElementById('bgm');
+        var typewriter = document.getElementById('typewriter');
+        var photoWall = document.getElementById('photo-wall');
+
+        // --- 这里的文案改成了朋友间的祝福 ---
+        var text = "生日快乐呀！🎂\n\n烦恼清零！\n\n新的一岁，开开心心
+        var i = 0;
+        var speed = 100;
 
         btn.addEventListener('click', function() {
             mask.style.display = 'none';
             container.style.display = 'block';
             audio.play();
-            createEmojiRain();
+            createConfetti(); // 撒彩带
+            setTimeout(typeWriter, 500);
         });
 
-        function createEmojiRain() {
-            setInterval(function() {
-                var div = document.createElement('div');
-                div.innerText = ['❤️', '🎂', '✨', '🌹'][Math.floor(Math.random() * 4)];
-                div.style.position = 'fixed';
-                div.style.left = Math.random() * 100 + '%';
-                div.style.top = '-50px';
-                div.style.fontSize = Math.random() * 20 + 20 + 'px';
-                div.style.transition = 'top 3s linear, opacity 3s';
-                div.style.zIndex = '9999';
-                document.body.appendChild(div);
+        function typeWriter() {
+            if (i < text.length) {
+                typewriter.innerHTML += text.charAt(i) === '\n' ? '<br>' : text.charAt(i);
+                i++;
+                setTimeout(typeWriter, speed);
+            } else {
+                document.getElementById('cursor').style.display = 'none';
+                photoWall.style.opacity = '1';
+            }
+        }
 
-                setTimeout(function() {
-                    div.style.top = '110%';
-                    div.style.opacity = '0';
-                }, 100);
-                setTimeout(function() { div.remove(); }, 3000);
-            }, 300);
+        // 撒彩带特效
+        function createConfetti() {
+            var colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
+            
+            for (var i = 0; i < 100; i++) {
+                var confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confetti.style.opacity = Math.random();
+                document.body.appendChild(confetti);
+            }
         }
     </script>
 </body>
 </html>
-
